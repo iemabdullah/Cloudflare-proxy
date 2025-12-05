@@ -1,97 +1,112 @@
 
+## Features
 
-<div align="center">
+- 🚀 High-performance proxy based on Cloudflare Workers and snippets
 
-# Workers & Snippets deploy VLESS + trojan + shadowsocks
+- 🌐 Dual protocol support for vless + trojan
 
-**中文** | [English](README_EN.md)
+- 🔐 Password-protected homepage access
 
-Telegram交流反馈群组: https://t.me/eooceu
+- 📱 Supports multiple clients (v2rayN, shadowrocket, loon, karing, clash, sing-box, etc.)
 
-基于 Cloudflare Workers & Snippets 的高性能 VLESS+trojan 代理服务
+- 🌐 Automatic failover and load balancing
 
-YouTube视频部署教程：https://youtu.be/GEcKz2NoKlM
+- 📊 Real-time connection testing and status monitoring
 
-Shadowsocks部署视频教程：https://youtu.be/hUPN_69Atow
+- 📊 Speedtest is disabled by default
 
-</div>
+## Environment Variable Configuration
 
-## 功能特性
+### Required Variables
 
-- 🚀 基于 Cloudflare Workers 和 snippets 的高性能代理
-- 🌐 vless + trojan 双协议支持
-- 🔐 密码保护的主页访问
-- 📱 支持多种客户端(v2rayN,shadowrocket,loon,karing,clash,sing-box等)
-- 🌐 自动故障转移和负载均衡
-- 📊 实时连接测试和状态监控
-- 📊 默认禁用speedtest测速
+| Variable Name | Description | Default Value | Example |
 
-## 环境变量配置
-
-### 必需变量
-
-| 变量名 | 描述 | 默认值 | 示例 |
 |--------|------|--------|------|
-| `PASSWORD` | 主页访问密码 | `123456` | `your_web_password` |
 
-### workers可选变量
+| `PASSWORD` | Homepage access password | `123456` | `your_web_password` |
 
-| 变量名 | 描述 | 默认值 | 示例 |
+### Optional Variables for workers
+
+| Variable Name | Description | Default Value | Example |
+
 |--------|------|--------|------|
-| `UUID`或`AUTH`或`uuid` | 用户UUID | `5dc15e15-f285-4a9d-959b-0e4fbdd77b63` | `your-uuid` |
-| `PROXYIP`或`proxyip`或`proxyIP` | 代理服务器IP列表 | `13.230.34.30` | `tw.tp81.netlib.re` |
-| `SUB_PATH`或`subpath` | 订阅路径 | `link` | `sub` |
-| `DISABLE_TROJAN`或`CLOSE_TROJAN` | 是否关闭Trojan协议，true关闭，false开启 | `false` | 默认开启 |
 
-## 部署步骤
+| `UUID` or `AUTH` or `uuid` | User UUID | `5dc15e15-f285-4a9d-959b-0e4fbdd77b63` | `your-uuid` || `PROXYIP` or `proxyip` or `proxyIP` | Proxy server IP list | `13.230.34.30` | `tw.tp81.netlib.re` |
 
-1. **登录 Cloudflare Dashboard**
-   - 访问 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-   - 登录你的账户
+| `SUB_PATH` or `subpath` | Subscription path | `link` | `sub` |
 
-2. **创建 Worker**
-   - 点击 "Workers & Pages"
-   - 点击 "Create application"
-   - 选择 "Create Worker"
-   - 输入 Worker 名称(不要带vless,proxy之类的关键词，建议默认)
+| `DISABLE_TROJAN` or `CLOSE_TROJAN` | Whether to disable the Trojan protocol, true disables, false enables | `false` | Default enabled |
 
-3. **上传代码**
-   - 将 `_worker.js` 文件内容复制到编辑器
-   - 点击 右上角 "Deploy"
+## Deployment Steps
 
-4. **配置环境变量**
-   - 在 Worker 设置中找到 "Settings" → "Variables"
-   - 添加所需的环境变量并绑定自定义域名
-   - 点击 "Save"
+1. **Log in to Cloudflare Dashboard**
 
-5. **访问自定义域名**
-   - 输入登录密码进入主页查看相关订阅链接
+- Access [Cloudflare Dashboard](https://dash.cloudflare.com/)
 
-## snippets / workers 路径进阶用法
+- Log in to your account
 
-### 相关路径说明
+2. **Create a Worker**
+
+- Click "Workers & Pages"
+
+- Click "Create application"
+
+- Select "Create Worker"
+
+- Enter the Worker name (avoid keywords like vless, proxy, etc., default is recommended)
+
+3. **Upload Code**
+
+- Upload the code Copy the contents of the `_worker.js` file to the editor
+
+- Click "Deploy" in the upper right corner
+
+4. **Configure Environment Variables**
+
+- In the Worker settings, find "Settings" → "Variables"
+
+- Add the required environment variables and bind the custom domain
+
+- Click "Save"
+
+5. **Access Custom Domain**
+
+- Enter your login password to access the homepage and view the relevant subscription links
+
+## Advanced Usage of Snippets/Workers Paths
+
+### Related Path Explanation
+
 <img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/86b3dd1d-bbca-4786-9bb3-430bf6700024" />
 
-| 类型 | 示例 | 说明 |
+| Type | Example | Explanation |
+
 |------|------|------|
-| **默认路径** | `/?ed=2560` | 使用代码里设置的默认 `proxyip` |
-| **域名 proxyip** | `/?ed=2560&proxyip=proxyip.domain.com` 或 `proxyip=proxyip.domain.com`  | 使用域名形式的 `proxyip` |
-| **带端口的 proxyip** | `/?ed=2560&proxyip=ip:port` 或 `/proxyip=ip:port` | 使用带端口的 `proxyip` |
-| **SOCKS5** | `/?ed=2560&proxyip=socks://user:pass@host:port` 或 `/proxyip=socks://user:pass@host:port` | 使用全局 SOCKS5 出站 协议头可为socks5 |
-| **HTTP** | `/?ed=2560&proxyip=http://user:pass@host:port` 或 `/proxyip=http://user:pass@host:port` | 使用全局 HTTP/HTTPS 出站 |
 
+| **Default Path** | `/?ed=2560` | Uses the default `proxyip` set in the code |
 
-## cloudns 双向解析域名部署snippets统一使用的域名前缀
-```bash
+| **Domain** `proxyip** | `/?ed=2560&proxyip=proxyip.domain.com` or `proxyip=proxyip.domain.com` | Uses `proxyip` in domain name format |
+
+| **proxyip with port** | `/?ed=2560&proxyip=ip:port` or `/proxyip=ip:port` | Uses `proxyip` with port number |
+
+| **SOCKS5** | `/?ed=2560&proxyip=socks://user:pass@host:port` or `/proxyip=socks://user:pass@host:port` | Uses global SOCKS5 outbound protocol header can be socks5 |
+
+| **HTTP** | `/?ed=2560&proxyip=http://user:pass@host:port` or `/proxyip=http://user:pass@host:port` | Uses global HTTP/HTTPS outbound protocol |
+
+## cloudns Bidirectional DNS resolution and snippet deployment: A unified domain prefix is ​​used for the following:
+
+``bash
+
 _acme-challenge
+
 ```
 
-## shadowsocks 节点参数对照图
-节点path为SSpath变量或uuid开头，示例：`/5dc15e15-f285-4a9d-959b-0e4fbdd77b63/?ed=2560`   带proxyip的示例：`/5dc15e15-f285-4a9d-959b-0e4fbdd77b63/?ed=2560&proxyip=xxxx`  小火箭可去掉`?ed=2560&` 来自定义proxyip或全局出站
+## Shadowsocks Node Parameter Comparison Chart
+
+The node path starts with the SSpath variable or UUID. Example: `/5dc15e15-f285-4a9d-959b-0e4fbdd77b63/?ed=2560` Example with proxyip: `/5dc15e15-f285-4a9d-959b-0e4fbdd77b63/?ed=2560&proxyip=xxxx` You can remove `?ed=2560&` to customize the proxyip or enable global outbound DNS.
+
 <img width="1585" height="1420" alt="PixPin_2025-11-20_21-30-22" src="https://github.com/user-attachments/assets/1ce9060f-9a0d-4093-99e3-4548ee7ac869" />
 
-
-
-## 许可证
+## License
 
 GPL 2.0
